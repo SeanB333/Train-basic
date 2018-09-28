@@ -1,4 +1,11 @@
+// document ready
 $(document).ready(function () {
+
+    // run time display function
+
+    setInterval(myTimer, 1000);
+
+    // add firebase
 
     var config = {
         apiKey: "AIzaSyBc_admZir4gKCOodym4IudAJ3vkh5lxjY",
@@ -8,37 +15,58 @@ $(document).ready(function () {
         storageBucket: "train-basic.appspot.com",
         messagingSenderId: "91262479364"
     };
+
     firebase.initializeApp(config);
+
+    // define variables
 
     var database = firebase.database();
     var trainName = "";
-    var dest = "";
-    var trainTime = "";
-    var frequency = "";
+    var destination = "";
+    var trainTime = 0;
+    var frequency = 0;
+
+    // set function for time count
+
+    function myTimer() {
+        var date = new Date();
+        var time = date.toLocaleTimeString();
+        $("#display-time").html(time);
+    }
+
+    // set values onlick to submit
 
     $("#add-train").on("click", function (event) {
         event.preventDefault();
-
         trainName = $("#train-input").val().trim();
-        dest = $("#destination-input").val().trim();
+        destination = $("#destination-input").val().trim();
         trainTime = $("#time-input").val().trim();
         frequency = $("#freq-input").val().trim();
 
-        console.log(trainName);
-        console.log(dest);
-        console.log(trainTime);
-        console.log(frequency);
+        // difine firebase object
 
         database.ref().set({
             name: trainName,
-            destination: dest,
+            destination: destination,
             time: trainTime,
             frequency: frequency
-        })
-    })
+        });
 
-    database.ref().on("value", function(snapshot){
-        snap = snapshot.val();
         
-    })
-})
+    });
+
+    // call database object to display
+
+    database.ref().on("value", function (snapshot) {
+        var snap = snapshot.val();
+        var 
+        // append the table values
+
+        $(".input").append(
+            `<tr class="border-top">
+                <td>${snap.name}</td>
+                <td>${snap.destination}</td>
+                <td>${snap.frequency}</td>`
+        );
+    });
+});
