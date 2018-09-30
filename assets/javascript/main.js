@@ -23,14 +23,18 @@ $(document).ready(function () {
     var database = firebase.database();
     var trainName = "";
     var destination = "";
-    var trainTime = 0;
-    var frequency = 0;
+    var trainTime = "";
+    var frequency = "";
+    var time = "Loading";
+    $("#display-time").html(time);
 
-    // set function for time count
+    
+
+    // set functions
 
     function myTimer() {
         var date = new Date();
-        var time = date.toLocaleTimeString();
+        time = date.toLocaleTimeString();
         $("#display-time").html(time);
     }
 
@@ -45,7 +49,7 @@ $(document).ready(function () {
 
         // difine firebase object
 
-        database.ref().set({
+        database.ref().push({
             name: trainName,
             destination: destination,
             time: trainTime,
@@ -57,16 +61,25 @@ $(document).ready(function () {
 
     // call database object to display
 
-    database.ref().on("value", function (snapshot) {
+    database.ref().on("child_added", function (snapshot) {
+        
+        // define firebase variables
+
         var snap = snapshot.val();
-        var 
+        var convert = moment(snap.time, "HH:mm").format();
+        var timeRemain = moment().diff(convert, "minutes") % snap.frequency;
+        var minAway = frequency - timeRemain;
+        var arrival = moment().add(minAway, "m").format("h:mm:ss a");
+        
         // append the table values
 
         $(".input").append(
             `<tr class="border-top">
                 <td>${snap.name}</td>
                 <td>${snap.destination}</td>
-                <td>${snap.frequency}</td>`
+                <td>${snap.frequency}</td>
+                <td>${arrival}</td>
+                <td>${minAway} mins</td>`
         );
     });
 });
