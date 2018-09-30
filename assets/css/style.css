@@ -1,6 +1,12 @@
+body{
+    background-image: url(../images/trainBack.png);
+    background-attachment: fixed;
+}
+
 .train{
     background-image: url(../images/train.jpg);
-    background-size: cover;  
+    background-size: cover;
+    
 }
 
 .btn-dark{
