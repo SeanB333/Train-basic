@@ -1,5 +1,24 @@
 .train{
     background-image: url(../images/train.jpg);
-    background-size: cover;
-    
+    background-size: cover;  
+}
+
+.btn-dark{
+    transition: background-color 0.2s ease;
+}
+
+.red {
+    background-color: red;
+}
+
+.red:hover{
+    background-color: darkred;
+}
+
+.green {
+    background-color: green;
+}
+
+.green:hover{
+    background-color: darkgreen;
 }
